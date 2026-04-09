@@ -76,6 +76,52 @@ public class Users {
     @Column
     private String role;
 
+
+    public Users(){};
+
+    public Users(Long id,
+                 String name,
+                 String email,
+                 String password,
+                 String username,
+                 String gender,
+                 String profession,
+                 String imagen,
+                 String avatar,
+                 Role roleMK,
+                 boolean activeStatus,
+                 boolean darkMode,
+                 String messengerColor,
+                 Universidades universidades,
+                 Carreras carreras,
+                 Insignias insignias,
+                 LocalDateTime createdAt,
+                 LocalDateTime updateAt,
+                 String address,
+                 String role ){
+
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.gender = gender;
+        this.profession = profession;
+        this.imagen = imagen;
+        this.avatar = avatar;
+        this.roleMK = roleMK;
+        this.activeStatus = activeStatus;
+        this.darkMode = darkMode;
+        this.messengerColor = messengerColor;
+        this.universidades = universidades;
+        this.carreras = carreras;
+        this.insignias = insignias;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+        this.address = address;
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }
