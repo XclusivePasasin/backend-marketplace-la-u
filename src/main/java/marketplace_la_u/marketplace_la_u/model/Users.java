@@ -76,7 +76,7 @@ public class Users {
     @Column
     private String role;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
