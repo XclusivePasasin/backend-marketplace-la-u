@@ -157,27 +157,27 @@ public class Users {
     }
 
     public boolean isActive_status() {
-        return active_status;
+        return activeStatus;
     }
 
     public void setActive_status(boolean active_status) {
-        this.active_status = active_status;
+        this.activeStatus = active_status;
     }
 
     public boolean isDark_mode() {
-        return dark_mode;
+        return darkMode;
     }
 
     public void setDark_mode(boolean dark_mode) {
-        this.dark_mode = dark_mode;
+        this.darkMode = dark_mode;
     }
 
     public String getMeseenger_color() {
-        return meseenger_color;
+        return messengerColor;
     }
 
     public void setMeseenger_color(String meseenger_color) {
-        this.meseenger_color = meseenger_color;
+        this.messengerColor = meseenger_color;
     }
 
     public Universidades getUniversidades() {
