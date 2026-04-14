@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Personal_Access_Tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "tokenable_id")
