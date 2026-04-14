@@ -1,30 +1,25 @@
 package marketplace_la_u.marketplace_la_u.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "universidades")
+@Table(name = "device_tokens")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Universidades {
+public class Device_Tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
     @Column(nullable = false)
-    private String nombre;
-
-    @Column
-    private String dominio;
-
-    @Column
-    private String siglas;
-
-    @Column
-    private String color;
-
+    private String token;
 }

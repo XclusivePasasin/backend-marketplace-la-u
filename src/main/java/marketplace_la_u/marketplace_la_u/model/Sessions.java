@@ -5,26 +5,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "universidades")
+@Table(name = "sessions")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Universidades {
+public class Sessions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     @Column
-    private String dominio;
+    private String ipAddress;
 
     @Column
-    private String siglas;
+    private String payload;
 
     @Column
-    private String color;
-
+    private int lastActivity;
 }
