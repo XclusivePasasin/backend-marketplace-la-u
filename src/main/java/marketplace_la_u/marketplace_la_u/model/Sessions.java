@@ -5,16 +5,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "carreras")
+@Table(name = "sessions")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
-public class Carreras {
+public class Sessions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
-    private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+    @Column
+    private String ipAddress;
+
+    @Column
+    private String payload;
+
+    @Column
+    private int lastActivity;
 }
