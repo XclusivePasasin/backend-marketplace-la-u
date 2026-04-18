@@ -1,5 +1,5 @@
 package marketplace_la_u.marketplace_la_u.repository;
-import marketplace_la_u.marketplace_la_u.orders.Orders;
+import marketplace_la_u.marketplace_la_u.model.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

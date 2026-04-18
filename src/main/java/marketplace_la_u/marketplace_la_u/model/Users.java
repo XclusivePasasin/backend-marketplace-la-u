@@ -1,6 +1,10 @@
 package marketplace_la_u.marketplace_la_u.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,15 +23,21 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Campo obligatorio.")
     @Column(nullable = false)
     private String name;
 
+    @Email(message = "Correo invalido.")
+    @NotBlank(message = "Campo obligatorio.")
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotBlank(message = "Campo obligatorio")
+    @Size(min = 6, message = "Minimo 6 caracteres")
     @Column(nullable = false)
     private String password;
 
+    @NotBlank(message = "Campo obligatorio")
     @Column(unique = true)
     private String username;
 
@@ -58,10 +68,12 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "universidad_id")
+    @NotNull(message = "Campo obligatorio")
     private Universidades universidades;
 
     @ManyToOne
     @JoinColumn(name = "carrera_id")
+    @NotNull(message = "Campo obligatorio.")
     private Carreras carreras;
 
     @ManyToOne
@@ -76,7 +88,8 @@ public class Users {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @Column
+    @NotBlank(message = "Campo obligatorio.")
+    @Column(nullable = false)
     private String address;
 
     @Column
