@@ -5,26 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "universidades")
+@Table(name = "followers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Universidades {
+public class Followers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nombre;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
-    @Column
-    private String dominio;
-
-    @Column
-    private String siglas;
-
-    @Column
-    private String color;
-
+    @ManyToOne
+    @JoinColumn(name = "follower_id")
+    private Users follower;
 }
