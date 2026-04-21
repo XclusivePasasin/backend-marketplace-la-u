@@ -1,5 +1,7 @@
 package marketplace_la_u.marketplace_la_u.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,6 +37,7 @@ public class Users {
     @NotBlank(message = "Campo obligatorio")
     @Size(min = 6, message = "Minimo 6 caracteres")
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NotBlank(message = "Campo obligatorio")
@@ -58,10 +61,10 @@ public class Users {
     private Role roleMK;
 
     @Column(name = "active_status")
-    private boolean activeStatus;
+    private Boolean activeStatus;
 
     @Column(name = "dark_mode")
-    private  boolean darkMode;
+    private  Boolean darkMode;
 
     @Column(name = "messenger_color")
     private String messengerColor;
