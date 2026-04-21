@@ -1,59 +1,104 @@
-package marketplace_la_u.marketplace_la_u.model;
+package marketplace_la_u.marketplace_la_u.model; // <-- Corregido a .model
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "product")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column
-    private String serial;
+    private Integer user_id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
-    @Column
+    @Column(length = 100)
     private String name;
 
-    @Column(name = "price", precision = 10, scale = 2)
-    private BigDecimal price;
+    private Double price;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private Integer category_id;
 
-    @Column
     private String img_url;
 
-    @Column
     private Boolean status;
 
-    @Column
-    private int stock;
+    private Integer stock;
 
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    // --- GETTERS Y SETTERS ---
 
-    @Column(name = "update_at")
-    @CreationTimestamp
-    private LocalDateTime updateAt;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Integer category_id) {
+        this.category_id = category_id;
+    }
+
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 }
