@@ -17,7 +17,7 @@ public class Category {
     private Long id;
 
     @Column
-    private String nombre;
+    private String name;
 
     @Column
     private String descripcion;

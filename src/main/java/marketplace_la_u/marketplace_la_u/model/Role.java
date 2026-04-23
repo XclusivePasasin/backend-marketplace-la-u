@@ -18,7 +18,6 @@ public class Role {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull
     private String name;
 
 }

@@ -1,5 +1,7 @@
 package marketplace_la_u.marketplace_la_u.controller;
-
+import jakarta.validation.Valid;
+import marketplace_la_u.marketplace_la_u.DTO.category.CategoryRequest;
+import marketplace_la_u.marketplace_la_u.DTO.category.CategoryResponse;
 import marketplace_la_u.marketplace_la_u.model.Category;
 import marketplace_la_u.marketplace_la_u.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,32 +17,32 @@ public class CategoryController {
     @Autowired
     private CategoryService service;
 
-    // ✅ CREAR
+
     @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody Category category) {
+    public ResponseEntity<?> registerCategory(@Valid @RequestBody CategoryRequest category) {
         try {
-            return ResponseEntity.ok(service.guardar(category));
+            return ResponseEntity.ok(service.registerCategory(category));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // ✅ LISTAR
+
     @GetMapping
-    public List<Category> listar() {
-        return service.listar();
+    public List<CategoryResponse> listCategory() {
+        return service.listCategory();
     }
 
-    // ✅ ACTUALIZAR
+
     @PutMapping("/{id}")
-    public Category actualizar(@PathVariable Long id, @RequestBody Category category) {
-        return service.actualizar(id, category);
+    public CategoryResponse updateCategory(@Valid@PathVariable Long id, @RequestBody Category category) {
+        return service.updateCategory(id, category);
     }
 
-    // ✅ ELIMINAR
+
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+    public void deleteCategory(@PathVariable Long id) {
+        service.deleteCategory(id);
     }
 }
 

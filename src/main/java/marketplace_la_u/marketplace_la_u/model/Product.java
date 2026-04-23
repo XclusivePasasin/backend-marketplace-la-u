@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,7 +24,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Campo obligatorio.")
     @Column
     private String serial;
 
@@ -33,7 +33,6 @@ public class Product {
     private Users user;
 
     @Column
-    @NotBlank(message = "Campo obligatorio.")
     private String name;
 
     @Column(name = "price", precision = 10, scale = 2)
@@ -62,6 +61,6 @@ public class Product {
     private LocalDateTime createdAt;
 
     @Column(name = "update_at")
-    @CreationTimestamp
+    @UpdateTimestamp
     private LocalDateTime updateAt;
 }
