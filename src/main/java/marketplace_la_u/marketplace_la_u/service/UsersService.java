@@ -1,4 +1,5 @@
 package marketplace_la_u.marketplace_la_u.service;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import marketplace_la_u.marketplace_la_u.DTO.auth.RegisterRequest;
@@ -27,11 +28,11 @@ public class UsersService {
     public UserResponse registerUser(RegisterRequest userDto){
 
         if (repository.existsByEmail(userDto.getEmail())){
-            throw new RuntimeException("Correo ya registrado.");
+            throw new IllegalStateException("Correo ya registrado.");
         }
 
         if (repository.existsByUsername(userDto.getUsername())){
-            throw new RuntimeException(("Username ya registrado"));
+            throw new IllegalStateException("Username ya registrado");
         }
 
         Users user = new Users();
@@ -50,32 +51,38 @@ public class UsersService {
 
     public void deleteUser(Long id){
         if (!repository.existsById(id)){
-            throw new RuntimeException("Usuario no encontrado");
+            throw new EntityNotFoundException("Usuario no encontrado.");
         }
         repository.deleteById(id);
     }
 
     public UserResponse updateUser(Long id, UserUpdateRequest nuevosDatos){
         return repository.findById(id).map(user ->{
+            if(nuevosDatos.getEmail() != null){
+                if(repository.existsByEmail(nuevosDatos.getEmail())){
+                    throw new IllegalStateException("Email ya en uso.");
+                }
+                user.setEmail(nuevosDatos.getEmail());
+            }
             if(nuevosDatos.getName() != null) user.setName(nuevosDatos.getName());
-            if(nuevosDatos.getEmail() != null) user.setEmail(nuevosDatos.getEmail());
             if(nuevosDatos.getProfession() != null) user.setProfession(nuevosDatos.getProfession());
             if(nuevosDatos.getAddress() != null) user.setAddress(nuevosDatos.getAddress());
 
             if(nuevosDatos.getCareerId() != null){
-                Carreras career = careerRepository.findById(nuevosDatos.getCareerId()).orElseThrow(() -> new RuntimeException("Carrera no encontrada."));
+                Carreras career = careerRepository.findById(nuevosDatos.getCareerId()).orElseThrow(() -> new EntityNotFoundException("Carrera no encontrada."));
                 user.setCarreras(career);
             }
 
             if(nuevosDatos.getUniversityId() != null){
-                Universidades university = universityRepository.findById(nuevosDatos.getUniversityId()).orElseThrow(() -> new RuntimeException("Universidad no encontrada."));
+                Universidades university = universityRepository.findById(nuevosDatos.getUniversityId()).orElseThrow(() -> new EntityNotFoundException("Universidad no encontrada."));
                 user.setUniversidades(university);
             }
+
             return new UserResponse(repository.save(user));
-        }).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        }).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
     }
 
     public UserResponse consultById(Long id){
-        return repository.findById(id).map(UserResponse::new).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        return repository.findById(id).map(UserResponse::new).orElseThrow(()-> new EntityNotFoundException("Usuario no encontrado."));
     }
 }

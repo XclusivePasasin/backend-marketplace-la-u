@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserUpdateRequest {
 
-    @Size(min = 3, message = "Minimo 2 caracteres")
+    @Size(min = 3, message = "Minimo 3 caracteres")
     private String name;
 
     @Email(message = "Correo invalido.")

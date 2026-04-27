@@ -1,0 +1,10 @@
+package marketplace_la_u.marketplace_la_u.Error;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class ErrorResponse {
+    private int status;
+    private String message;
+}
