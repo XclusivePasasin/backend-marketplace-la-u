@@ -12,5 +12,5 @@ import java.util.List;
 public class OrderRequest {
 
     @NotEmpty(message = "La orden debe tener minimo un producto")
-    private List<OrderItemRequest> items;
+    private List<OrderProductRequest> product;
 }

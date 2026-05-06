@@ -58,12 +58,13 @@ public class UsersService {
 
     public UserResponse updateUser(Long id, UserUpdateRequest nuevosDatos){
         return repository.findById(id).map(user ->{
-            if(nuevosDatos.getEmail() != null){
-                if(repository.existsByEmail(nuevosDatos.getEmail())){
+            if(nuevosDatos.getEmail() != null) {
+                if (repository.existsByEmailAndIdNot(nuevosDatos.getEmail(), id)) {
                     throw new IllegalStateException("Email ya en uso.");
                 }
                 user.setEmail(nuevosDatos.getEmail());
             }
+
             if(nuevosDatos.getName() != null) user.setName(nuevosDatos.getName());
             if(nuevosDatos.getProfession() != null) user.setProfession(nuevosDatos.getProfession());
             if(nuevosDatos.getAddress() != null) user.setAddress(nuevosDatos.getAddress());

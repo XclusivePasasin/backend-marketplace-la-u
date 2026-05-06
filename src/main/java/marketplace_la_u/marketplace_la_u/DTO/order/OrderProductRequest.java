@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderItemRequest {
+public class OrderProductRequest {
 
     @NotNull(message = "Campo obligatorio")
     private Long productId;

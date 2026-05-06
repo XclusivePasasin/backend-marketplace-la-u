@@ -33,12 +33,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProducts(@PathVariable Long id,@RequestBody @Valid ProductUpdateRequest productDto, @RequestHeader("X-User-Id") Long userId) {
+    public ResponseEntity<ProductResponse> updateProducts(@PathVariable Long id,@RequestBody @Valid ProductUpdateRequest productDto) {
+        Long userId = authenticatedUserMock.getAuthenticatedUserId();
         return ResponseEntity.ok(productService.updateProducts(id, productDto, userId));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProducts(@PathVariable Long id, @RequestHeader("X-User-Id") Long userId) {
+    public ResponseEntity<Void> deleteProducts(@PathVariable Long id) {
+        Long userId = authenticatedUserMock.getAuthenticatedUserId();
         productService.deleteProducts(id, userId);
         return ResponseEntity.noContent().build();
     }
