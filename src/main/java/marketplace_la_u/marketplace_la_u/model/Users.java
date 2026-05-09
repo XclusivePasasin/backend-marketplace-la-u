@@ -48,10 +48,10 @@ public class Users {
     private Role roleMK;
 
     @Column(name = "active_status")
-    private boolean activeStatus;
+    private Boolean activeStatus;
 
     @Column(name = "dark_mode")
-    private  boolean darkMode;
+    private Boolean darkMode;
 
     @Column(name = "messenger_color")
     private String messengerColor;

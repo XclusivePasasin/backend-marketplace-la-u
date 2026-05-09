@@ -1,6 +1,7 @@
 package marketplace_la_u.marketplace_la_u.model; // <-- Corregido a .model
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -8,9 +9,11 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    private Integer user_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
 
     @Column(length = 100)
     private String name;
@@ -22,28 +25,33 @@ public class Product {
 
     private Integer category_id;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String img_url;
 
     private Boolean status;
 
     private Integer stock;
 
+    // Relación 1-a-N con ProductImage
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> images;
+
     // --- GETTERS Y SETTERS ---
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -100,5 +108,13 @@ public class Product {
 
     public void setStock(Integer stock) {
         this.stock = stock;
+    }
+
+    public List<ProductImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ProductImage> images) {
+        this.images = images;
     }
 }

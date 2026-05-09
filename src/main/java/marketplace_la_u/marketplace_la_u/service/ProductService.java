@@ -18,6 +18,11 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    // Obtener un producto por ID
+    public Product getProductById(Integer id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
     // Guardar un nuevo producto
     public Product saveProduct(Product product) {
         // Por defecto, un producto nuevo está activo/disponible
