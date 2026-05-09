@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "sessions")
 @Data
@@ -26,5 +28,5 @@ public class Sessions {
     private String payload;
 
     @Column
-    private int lastActivity;
+    private LocalDateTime lastActivity;
 }

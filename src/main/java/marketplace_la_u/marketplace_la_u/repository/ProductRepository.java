@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @EntityGraph(attributePaths = {"user", "images"})
     @Override
@@ -17,5 +17,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     @EntityGraph(attributePaths = {"user", "images"})
     @Override
-    Optional<Product> findById(Integer id);
+    Optional<Product> findById(Long id);
 }

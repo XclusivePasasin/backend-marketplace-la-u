@@ -81,5 +81,4 @@ public class Users {
 
     @Column
     private String role;
-
 }

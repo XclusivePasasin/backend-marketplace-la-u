@@ -1,54 +1,56 @@
 package marketplace_la_u.marketplace_la_u.service;
-
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import marketplace_la_u.marketplace_la_u.DTO.category.CategoryRequest;
+import marketplace_la_u.marketplace_la_u.DTO.category.CategoryResponse;
 import marketplace_la_u.marketplace_la_u.model.Category;
 import marketplace_la_u.marketplace_la_u.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import marketplace_la_u.marketplace_la_u.DTO.category.CategoryUpdateRequest;
 
 import java.util.List;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository repository;
+    private final CategoryRepository repository;
 
-    public List<Category> listar() {
-        return repository.findAll();
+    public List<CategoryResponse> listCategory() {
+        return repository.findAll().stream().map(CategoryResponse::new).toList();
     }
 
-    public Category guardar(Category category) {
-        if (repository.existsByNombre(category.getNombre())) {
-            throw new RuntimeException("La categoría ya existe");
+    public CategoryResponse registerCategory(CategoryRequest categoryDto) {
+        if (repository.existsByName(categoryDto.getName())) {
+            throw new IllegalStateException("La categoría ya existe.");
         }
+        Category category = new Category();
+        category.setName(categoryDto.getName());
+        category.setDescripcion(categoryDto.getDescription());
+        Category newCategory = repository.save(category);
 
-        return repository.save(category);
+        return new CategoryResponse(newCategory);
     }
 
-    public Category obtenerPorId(Long id) {
-        return repository.findById(id).orElse(null);
+    public CategoryResponse consultById(Long id) {
+        return repository.findById(id).map(CategoryResponse::new).orElseThrow(() -> new EntityNotFoundException("Categoria no encontrada."));
     }
 
-    public void eliminar(Long id) {
+    public void deleteCategory(Long id){
+        if (!repository.existsById(id)){
+            throw new EntityNotFoundException("Categoria no encontrado.");
+        }
         repository.deleteById(id);
     }
 
-    public Category actualizar(Long id, Category category) {
-
-        Category existente = repository.findById(id).orElse(null);
-
-        if (existente == null) {
-            throw new RuntimeException("Categoría no encontrada");
-        }
-
-        if (!existente.getNombre().equals(category.getNombre()) &&
-                repository.existsByNombre(category.getNombre())) {
-            throw new RuntimeException("El nombre ya está en uso");
-        }
-
-        existente.setNombre(category.getNombre());
-        existente.setDescripcion(category.getDescripcion());
-
-        return repository.save(existente);
+    public CategoryResponse updateCategory(Long id, CategoryUpdateRequest nuevosDatos){
+        return repository.findById(id).map(category -> {
+            if (nuevosDatos.getName() != null) category.setName(nuevosDatos.getName());
+            if (nuevosDatos.getDescription() != null) category.setDescripcion(nuevosDatos.getDescription());
+            return new CategoryResponse(repository.save(category));
+        }).orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada."));
     }
+
 }
