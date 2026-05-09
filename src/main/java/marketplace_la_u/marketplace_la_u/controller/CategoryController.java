@@ -2,18 +2,20 @@ package marketplace_la_u.marketplace_la_u.controller;
 
 import marketplace_la_u.marketplace_la_u.model.Category;
 import marketplace_la_u.marketplace_la_u.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService service;
+    private final CategoryService service;
+
+    public CategoryController(CategoryService service) {
+        this.service = service;
+    }
 
     // ✅ CREAR
     @PostMapping
