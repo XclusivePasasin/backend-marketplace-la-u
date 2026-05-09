@@ -1,4 +1,5 @@
 package marketplace_la_u.marketplace_la_u.controller;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import marketplace_la_u.marketplace_la_u.DTO.product.ProductRequest;
@@ -33,7 +34,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProducts(@PathVariable Long id,@RequestBody @Valid ProductUpdateRequest productDto) {
+    public ResponseEntity<ProductResponse> updateProducts(@PathVariable Long id, @RequestBody @Valid ProductUpdateRequest productDto) {
         Long userId = authenticatedUserMock.getAuthenticatedUserId();
         return ResponseEntity.ok(productService.updateProducts(id, productDto, userId));
     }
@@ -44,7 +45,6 @@ public class ProductController {
         productService.deleteProducts(id, userId);
         return ResponseEntity.noContent().build();
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> consultById(@PathVariable Long id) {

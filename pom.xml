@@ -81,6 +81,12 @@
 			<version>1.18.44</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Jackson para parsear JSON (múltiples imágenes) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

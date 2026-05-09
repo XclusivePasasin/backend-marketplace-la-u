@@ -1,4 +1,5 @@
 package marketplace_la_u.marketplace_la_u.model;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +22,8 @@ public class Users {
     @Column(nullable = false)
     private String name;
 
-
     @Column(nullable = false, unique = true)
     private String email;
-
 
     @Column(nullable = false)
     private String password;
@@ -52,7 +51,7 @@ public class Users {
     private Boolean activeStatus;
 
     @Column(name = "dark_mode")
-    private  Boolean darkMode;
+    private Boolean darkMode;
 
     @Column(name = "messenger_color")
     private String messengerColor;
@@ -82,5 +81,4 @@ public class Users {
 
     @Column
     private String role;
-
 }

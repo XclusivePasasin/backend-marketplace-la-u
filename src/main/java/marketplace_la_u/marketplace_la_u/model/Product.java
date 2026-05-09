@@ -2,7 +2,6 @@ package marketplace_la_u.marketplace_la_u.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,14 +11,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,8 +27,8 @@ public class Product {
     @Column
     private String serial;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private Users user;
 
@@ -47,16 +47,20 @@ public class Product {
     @NotNull(message = "Seleccionar categoria obligatorio.")
     private Category category;
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String img_url;
 
     @Column
     private Boolean status;
 
     @Column
-    private int stock;
+    private Integer stock;
 
-    @Column(name = "created_at")
+    // Relación 1-a-N con ProductImage
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ProductImage> images;
+
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

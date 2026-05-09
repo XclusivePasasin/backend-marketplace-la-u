@@ -1,4 +1,5 @@
 package marketplace_la_u.marketplace_la_u.service;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import marketplace_la_u.marketplace_la_u.DTO.product.ProductRequest;
@@ -19,15 +20,20 @@ import jakarta.persistence.EntityNotFoundException;
 @Transactional
 public class ProductService {
 
-    private  final ProductRepository productRepository;
+    private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UsersRepository userRepository;
+    
+    // Inyectamos el servicio de imágenes que programaste
+    private final ProductImageService productImageService;
 
     public ProductResponse createProducts(ProductRequest productDto) {
 
-        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada." ));
+        Category category = categoryRepository.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada." ));
 
-        Users user = userRepository.findById(productDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
+        Users user = userRepository.findById(productDto.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
 
         Product product = new Product();
         product.setName(productDto.getName());
@@ -36,11 +42,31 @@ public class ProductService {
         product.setCategory(category);
         product.setDescription(productDto.getDescription());
         product.setUser(user);
+        
+        // Rescatado de tu rama master: Por defecto, un producto nuevo está activo
+        product.setStatus(true); 
 
-        return new ProductResponse(productRepository.save(product));
+        // 1. Guardamos el producto base en la DB para que se le asigne un ID
+        Product savedProduct = productRepository.save(product);
+
+        // 2. Lógica de múltiples imágenes movida desde el controlador
+        if (productDto.getImages() != null && !productDto.getImages().isEmpty()) {
+            // Asignamos la primera imagen como portada en la tabla principal
+            savedProduct.setImg_url(productDto.getImages().get(0));
+            // Guardamos la galería completa en la tabla product_image
+            productImageService.saveImages(savedProduct, productDto.getImages());
+            // Actualizamos el producto con su URL principal
+            savedProduct = productRepository.save(savedProduct);
+        } else {
+            savedProduct.setImg_url("");
+        }
+
+        return new ProductResponse(savedProduct);
     }
 
-    public List<ProductResponse> listProducts(){return productRepository.findAll().stream().map(ProductResponse::new).toList();}
+    public List<ProductResponse> listProducts(){
+        return productRepository.findAll().stream().map(ProductResponse::new).toList();
+    }
 
     public void deleteProducts(Long id, Long userId){
         Product product = productRepository.findById(id)
@@ -54,7 +80,8 @@ public class ProductService {
     }
 
     public ProductResponse consultById(Long id){
-        return productRepository.findById(id).map(ProductResponse::new).orElseThrow(()-> new EntityNotFoundException("Producto no encontrado."));
+        return productRepository.findById(id).map(ProductResponse::new)
+                .orElseThrow(()-> new EntityNotFoundException("Producto no encontrado."));
     }
 
     public ProductResponse updateProducts(Long id, ProductUpdateRequest nuevosDatos, Long userId) {
@@ -77,9 +104,5 @@ public class ProductService {
 
             return new ProductResponse(productRepository.save(product));
         }).orElseThrow(() -> new EntityNotFoundException("Producto no encontrado."));
-
     }
 }
-
-
-
