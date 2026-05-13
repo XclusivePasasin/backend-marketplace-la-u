@@ -1,8 +1,10 @@
 package marketplace_la_u.marketplace_la_u.DTO.product;
+
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List; // <-- Importación necesaria
 
 @Data
 @AllArgsConstructor
@@ -25,4 +27,6 @@ public class ProductRequest {
     @NotNull(message = "campo obligatorio.")
     private Long categoryId;
 
+    // es para recibir el arreglo de fotos del frontend
+    private List<String> images;
 }

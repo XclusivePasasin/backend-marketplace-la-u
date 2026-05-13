@@ -15,13 +15,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import marketplace_la_u.marketplace_la_u.DTO.user.UserResponse;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class UsersService {
 
     private final UsersRepository repository;
-    private final BCryptPasswordEncoder passwordHash;
+    private final PasswordEncoder passwordEncoder;
     private final CarrerasRepository careerRepository;
     private final UniversidadesRepository universityRepository;
 
@@ -40,7 +42,7 @@ public class UsersService {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setProfession(userDto.getProfession());
-        user.setPassword(passwordHash.encode(userDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Users newUser = repository.save(user);
         return new UserResponse(newUser);
     }

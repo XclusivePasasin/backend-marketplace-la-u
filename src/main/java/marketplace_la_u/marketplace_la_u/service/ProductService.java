@@ -1,5 +1,5 @@
 package marketplace_la_u.marketplace_la_u.service;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import marketplace_la_u.marketplace_la_u.DTO.product.ProductRequest;
@@ -28,13 +28,15 @@ public class ProductService {
     private final ProductImageService productImageService;
 
     public ProductResponse createProducts(ProductRequest productDto) {
-
+        // 1. Validaciones de Categoría y Usuario (JWT)
         Category category = categoryRepository.findById(productDto.getCategoryId())
-                .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada." ));
+                .orElseThrow(() -> new EntityNotFoundException("Categoría no encontrada."));
 
-        Users user = userRepository.findById(productDto.getUserId())
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users user = userRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado."));
 
+        // 2. Crear instancia del producto
         Product product = new Product();
         product.setName(productDto.getName());
         product.setPrice(BigDecimal.valueOf(productDto.getPrice()));
@@ -42,26 +44,26 @@ public class ProductService {
         product.setCategory(category);
         product.setDescription(productDto.getDescription());
         product.setUser(user);
-        
-        // Rescatado de tu rama master: Por defecto, un producto nuevo está activo
-        product.setStatus(true); 
+        product.setStatus(true);
 
-        // 1. Guardamos el producto base en la DB para que se le asigne un ID
-        Product savedProduct = productRepository.save(product);
-
-        // 2. Lógica de múltiples imágenes movida desde el controlador
+        // 3. PROCESAMIENTO DE IMÁGENES (Limpieza de URL)
         if (productDto.getImages() != null && !productDto.getImages().isEmpty()) {
-            // Asignamos la primera imagen como portada en la tabla principal
-            savedProduct.setImg_url(productDto.getImages().get(0));
-            // Guardamos la galería completa en la tabla product_image
-            productImageService.saveImages(savedProduct, productDto.getImages());
-            // Actualizamos el producto con su URL principal
-            savedProduct = productRepository.save(savedProduct);
-        } else {
-            savedProduct.setImg_url("");
-        }
+            String fullUrl = productDto.getImages().get(0);
 
-        return new ProductResponse(savedProduct);
+            // Extraemos solo el nombre del archivo (ej: de "http://.../foto.webp" a "foto.webp")
+            String fileName = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
+
+            // Guardamos solo el nombre o la ruta relativa interna
+            product.setImg_url(fileName);
+
+            // Guardamos el producto para tener ID antes de la galería
+            Product savedProduct = productRepository.save(product);
+            productImageService.saveImages(savedProduct, productDto.getImages());
+            return new ProductResponse(savedProduct);
+        } else {
+            product.setImg_url("");
+            return new ProductResponse(productRepository.save(product));
+        }
     }
 
     public List<ProductResponse> listProducts(){
