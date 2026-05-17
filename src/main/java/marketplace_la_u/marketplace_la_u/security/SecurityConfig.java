@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/register").permitAll()
                         .requestMatchers("/api/categories/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        // Endpoint público para descargar factura PDF
+                        .requestMatchers("/api/orders/*/invoice").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
