@@ -52,13 +52,11 @@ public class PdfService {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-            String baseUri = getClass()
-                    .getResource("/static/")
-                    .toExternalForm();
-
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
-            builder.withHtmlContent(htmlContent, baseUri);
+            // Al pasar "null" le decimos que no hay rutas locales,
+            // ya que el HTML usa la URL web directa para el logo.
+            builder.withHtmlContent(htmlContent, null);
             builder.toStream(outputStream);
             builder.run();
 
