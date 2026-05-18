@@ -14,4 +14,5 @@ COPY --from=build /app/target/*.war app.war
 # Exponemos el puerto
 EXPOSE 8080
 # Comando para arrancar Spring Boot
-ENTRYPOINT ["java", "-jar", "app.war"]
+# Comando para arrancar Spring Boot limitando la RAM a 256MB
+ENTRYPOINT ["java", "-Xms256m", "-Xmx256m", "-jar", "app.war"]
