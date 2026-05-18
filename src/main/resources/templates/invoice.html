@@ -2,129 +2,315 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
+
     <style>
+        @page {
+            size: A4;
+            margin: 28px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 40px;
-        }
-
-        .header {
-            background-color: #1976d2;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .header h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #FBFEFB;
+            color: #1f2937;
             margin: 0;
-            font-size: 26px;
+            padding: 0;
+            font-size: 13px;
         }
 
-        .invoice-info {
-            margin-top: 20px;
-            display: table;
-            width: 100%;
+        .invoice-container {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
         }
 
-        .box {
-            display: table-cell;
-            width: 50%;
-            padding: 15px;
-            border: 1px solid #ddd;
-        }
-
-        table {
+        .header-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
+            margin-bottom: 30px;
         }
 
-        th {
-            background-color: #1976d2;
-            color: white;
-            padding: 10px;
+        .brand-box {
+            color: #7C3AED;
+            padding: 24px;
+            border-radius: 14px;
+        }
+
+        .brand-logo {
+            width: 80px;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .brand-subtitle {
+            margin-top: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #7C3AED;
+        }
+
+        .invoice-badge {
+            text-align: right;
+            vertical-align: top;
+        }
+
+        .invoice-label {
+            display: inline-block;
+            background-color: #f3f0ff;
+            color: #7C3AED;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .invoice-number {
+            margin-top: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .section-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 12px 0;
+            margin-bottom: 28px;
+        }
+
+        .info-box {
+            width: 50%;
+            background-color: #FBFEFB;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 18px;
+            vertical-align: top;
+        }
+
+        .info-title {
+            color: #7C3AED;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-row {
+            margin: 6px 0;
+            color: #4b5563;
+        }
+
+        .info-value {
+            color: #111827;
+            font-weight: bold;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+        }
+
+        .products-table thead tr {
+            background-color: #7C3AED;
+        }
+
+        .products-table th {
+            color: #ffffff;
+            padding: 14px 12px;
             text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
-        td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+        .products-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .products-table tbody tr:nth-child(even) {
+            background-color: #FBFEFB;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #111827;
         }
 
         .text-right {
             text-align: right;
         }
 
-        .total {
-            margin-top: 25px;
+        .text-center {
+            text-align: center;
+        }
+
+        /* RESUMEN */
+        .summary-table {
+            width: 100%;
+            margin-top: 28px;
+            border-collapse: separate;
+            border-spacing: 12px 0;
+            table-layout: fixed;
+        }
+
+        .summary-cell-note {
+            width: 55%;
+            height: 115px;
+            background-color: #FBFEFB;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+            vertical-align: middle;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .summary-cell-total {
+            width: 45%;
+            height: 115px;
+            background-color: #7C3AED;
+            border: 1px solid #7C3AED;
+            border-radius: 14px;
+            padding: 20px;
+            vertical-align: middle;
             text-align: right;
-            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .total-label {
+            font-size: 13px;
+            color: #ede9fe;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .total-amount {
+            font-size: 28px;
             font-weight: bold;
-            color: #1976d2;
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 35px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
             text-align: center;
-            color: #777;
-            font-size: 12px;
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .footer strong {
+            color: #7C3AED;
         }
     </style>
 </head>
+
 <body>
 
-<div class="header">
-    <h1>LAU MARKET</h1>
-    <p>Factura de compra</p>
-</div>
+<div class="invoice-container">
 
-<div class="invoice-info">
-    <div class="box">
-        <h3>Cliente</h3>
-        <p th:text="${clientName}">Nombre del cliente</p>
-        <p th:text="${clientEmail}">correo@email.com</p>
+    <table class="header-table">
+        <tr>
+            <td style="width: 65%;">
+                <div class="brand-box">
+                    <img class="brand-logo" src="images/logo.png" alt="LAU MARKET Logo" />
+                    <div class="brand-subtitle">Marketplace La U · Factura de compra</div>
+                </div>
+            </td>
+
+            <td class="invoice-badge" style="width: 35%;">
+                <div class="invoice-label">Factura</div>
+                <div class="invoice-number">
+                    #<span th:text="${orderId}">15</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="section-table">
+        <tr>
+            <td class="info-box">
+                <div class="info-title">Datos del cliente</div>
+
+                <p class="info-row">
+                    Cliente:
+                    <span class="info-value" th:text="${clientName}">Nombre del cliente</span>
+                </p>
+
+                <p class="info-row">
+                    Correo:
+                    <span class="info-value" th:text="${clientEmail}">correo@email.com</span>
+                </p>
+            </td>
+
+            <td class="info-box">
+                <div class="info-title">Datos de la orden</div>
+
+                <p class="info-row">
+                    Orden:
+                    <span class="info-value">
+                        #<span th:text="${orderId}">15</span>
+                    </span>
+                </p>
+
+                <p class="info-row">
+                    Fecha:
+                    <span class="info-value" th:text="${date}">15/05/2026</span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <table class="products-table">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th class="text-right">Precio</th>
+            <th class="text-center">Cantidad</th>
+            <th class="text-right">Subtotal</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="item : ${products}">
+            <td class="product-name" th:text="${item.name}">Producto</td>
+            <td class="text-right" th:text="${'$' + item.price}">$10.00</td>
+            <td class="text-center" th:text="${item.quantity}">2</td>
+            <td class="text-right" th:text="${'$' + item.subtotal}">$20.00</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="summary-table">
+        <tr>
+            <td class="summary-cell-note">
+                Gracias por tu compra. Esta factura fue generada automáticamente por el sistema de
+                <strong>LAU MARKET</strong>.
+            </td>
+
+            <td class="summary-cell-total">
+                <div class="total-label">Total a pagar</div>
+                <div class="total-amount">
+                    $<span th:text="${total}">20.00</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer">
+        <strong>LAU MARKET</strong> · Documento generado automáticamente
     </div>
 
-    <div class="box">
-        <h3>Factura</h3>
-        <p>
-            Orden:
-            <strong th:text="${orderId}">15</strong>
-        </p>
-        <p>
-            Fecha:
-            <span th:text="${date}">15/05/2026</span>
-        </p>
-    </div>
-</div>
-
-<table>
-    <thead>
-    <tr>
-        <th>Producto</th>
-        <th class="text-right">Precio</th>
-        <th class="text-right">Cantidad</th>
-        <th class="text-right">Subtotal</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${products}">
-        <td th:text="${item.name}">Producto</td>
-        <td th:text="${item.price}">$10.00</td>
-        <td th:text="${item.quantity}">2</td>
-        <td class="text-right" th:text="${item.subtotal}">$20.00</td>
-    </tr>
-    </tbody>
-</table>
-
-<div class="total">
-    Total:
-    <span th:text="${total}">$20.00</span>
-</div>
-
-<div class="footer">
-    Gracias por tu compra. Esta factura fue generada automáticamente.
 </div>
 
 </body>

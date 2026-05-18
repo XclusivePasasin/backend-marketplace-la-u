@@ -52,9 +52,13 @@ public class PdfService {
 
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
+            String baseUri = getClass()
+                    .getResource("/static/")
+                    .toExternalForm();
+
             PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.useFastMode();
-            builder.withHtmlContent(htmlContent, null);
+            builder.withHtmlContent(htmlContent, baseUri);
             builder.toStream(outputStream);
             builder.run();
 
