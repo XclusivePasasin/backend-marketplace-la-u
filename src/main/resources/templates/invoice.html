@@ -110,8 +110,8 @@
     </thead>
     <tbody>
     <tr th:each="item : ${products}">
-        <td th:text="${item.product.name}">Producto</td>
-        <td th:text="${item.pricePurchase}">$10.00</td>
+        <td th:text="${item.name}">Producto</td>
+        <td th:text="${item.price}">$10.00</td>
         <td th:text="${item.quantity}">2</td>
         <td class="text-right" th:text="${item.subtotal}">$20.00</td>
     </tr>

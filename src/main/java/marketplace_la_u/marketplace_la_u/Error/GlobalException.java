@@ -31,4 +31,13 @@ public class GlobalException {
         response.put("message", "Error interno: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+
+    // Atrapa el error de "Stock insuficiente" y lo manda limpio al frontend
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalState(IllegalStateException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 400);
+        response.put("message", ex.getMessage()); // Aquí viajará el texto "Stock insuficiente."
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 }

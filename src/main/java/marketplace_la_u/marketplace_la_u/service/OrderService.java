@@ -52,7 +52,6 @@ public class OrderService {
             Product product = productRepository.findById(productDto.getProductId()).orElseThrow(() -> new EntityNotFoundException("Producto no encontrado."));
 
             if (product.getStock() < productDto.getQuantity()) {throw new IllegalStateException("Stock insuficiente.");}
-
             product.setStock(product.getStock() - productDto.getQuantity());
 
             Order_Products item = new Order_Products();
