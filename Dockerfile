@@ -15,4 +15,4 @@ COPY --from=build /app/target/*.war app.war
 EXPOSE 8080
 # Comando para arrancar Spring Boot
 # Comando para arrancar Spring Boot limitando la RAM a 256MB
-ENTRYPOINT ["java", "-Xms256m", "-Xmx256m", "-jar", "app.war"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx256m", "-Dspring.datasource.url=jdbc:mysql://api.lauapp.es:3306/db_laumarket", "-Dspring.datasource.username=dev_laumarket", "-Dspring.datasource.password=laumarket123", "-jar", "app.war"]
