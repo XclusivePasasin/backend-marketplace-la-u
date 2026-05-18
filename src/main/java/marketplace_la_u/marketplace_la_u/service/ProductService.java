@@ -1,4 +1,5 @@
 package marketplace_la_u.marketplace_la_u.service;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import marketplace_la_u.marketplace_la_u.repository.ProductRepository;
 import marketplace_la_u.marketplace_la_u.repository.UsersRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.List;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +25,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UsersRepository userRepository;
-    
+
     // Inyectamos el servicio de imágenes que programaste
     private final ProductImageService productImageService;
 
@@ -46,19 +48,20 @@ public class ProductService {
         product.setUser(user);
         product.setStatus(true);
 
-        // 3. PROCESAMIENTO DE IMÁGENES (Limpieza de URL)
+        // 3. PROCESAMIENTO DE IMÁGENES
+        // Verificamos que vengan imágenes desde el frontend
         if (productDto.getImages() != null && !productDto.getImages().isEmpty()) {
-            String fullUrl = productDto.getImages().get(0);
 
-            // Extraemos solo el nombre del archivo (ej: de "http://.../foto.webp" a "foto.webp")
-            String fileName = fullUrl.substring(fullUrl.lastIndexOf("/") + 1);
-
-            // Guardamos solo el nombre o la ruta relativa interna
-            product.setImg_url(fileName);
+            // Unimos el array en un solo texto separado por comas
+            String imagenesUnidas = String.join(",", productDto.getImages());
+            product.setImg_url(imagenesUnidas);
 
             // Guardamos el producto para tener ID antes de la galería
             Product savedProduct = productRepository.save(product);
+
+            // Si tienes una tabla extra de imágenes, las guarda aquí también
             productImageService.saveImages(savedProduct, productDto.getImages());
+
             return new ProductResponse(savedProduct);
         } else {
             product.setImg_url("");
